@@ -76,7 +76,7 @@ export default function LeadsFeed({session}){
   const btn=(val,label,count)=><button onClick={()=>setFilter(val)} style={{background:filter===val?RED:'transparent',border:'1px solid '+(filter===val?RED:'#333'),borderRadius:4,padding:'8px 18px',color:filter===val?'#fff':'#999',fontSize:13,fontFamily:'Oswald,sans-serif',fontWeight:600,letterSpacing:'0.05em',cursor:'pointer'}}>{label}{count>0&&<span style={{opacity:0.7}}> ({count})</span>}</button>;
 
   return(
-    <div style={{background:BG,minHeight:'100vh',fontFamily:'Barlow,sans-serif'}}>
+    <div style={{background:BG,minHeight:'100vh',fontFamily:'Barlow,sans-serif',margin:0,padding:0}}>
       {/* Header â matches fortitudecreative.com */}
       <div style={{background:RED,borderBottom:'3px solid #000',padding:'0 28px',height:110,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
         <a href="https://fortitudecreative.com" target="_blank" rel="noreferrer">
