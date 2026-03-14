@@ -9,13 +9,19 @@ function timeAgo(ts){const d=(Date.now()-new Date(ts))/1000;if(d<60)return Math.
 function LeadCard({lead}){
   const src=SRC[lead.source]||SRC.snitcher;
   const isRB2B=lead.source==='rb2b';
+  const websiteUrl = lead.domain ? 'https://' + lead.domain : (lead.page_url || null);
+
   return(
     <div style={{background:CARD,border:'1px solid '+BORDER,borderRadius:6,padding:'18px 20px',marginBottom:10,display:'flex',gap:16,alignItems:'flex-start'}}>
       <div style={{background:src.bg,border:'1px solid '+src.border,borderRadius:4,padding:'3px 8px',fontSize:10,fontWeight:700,color:src.text,fontFamily:'Oswald,sans-serif',letterSpacing:'0.08em',whiteSpace:'nowrap',marginTop:2}}>{src.label}</div>
       <div style={{flex:1,minWidth:0}}>
         <div style={{display:'flex',alignItems:'baseline',gap:10,flexWrap:'wrap',marginBottom:4}}>
           {isRB2B&&lead.name&&<span style={{fontFamily:'Oswald,sans-serif',fontSize:16,color:'#fff',fontWeight:500}}>{lead.name}</span>}
-          {lead.company&&<span style={{fontFamily:'Oswald,sans-serif',fontSize:isRB2B?14:16,color:isRB2B?'#888':'#fff',fontWeight:isRB2B?400:500}}>{isRB2B?'@ '+lead.company:lead.company}</span>}
+          {lead.company&&(
+            websiteUrl
+              ? <a href={websiteUrl} target="_blank" rel="noreferrer" style={{fontFamily:'Oswald,sans-serif',fontSize:isRB2B?14:16,color:isRB2B?'#888':'#fff',fontWeight:isRB2B?400:500,textDecoration:'none',borderBottom:'1px solid #333'}}>{isRB2B?'@ '+lead.company:lead.company}</a>
+              : <span style={{fontFamily:'Oswald,sans-serif',fontSize:isRB2B?14:16,color:isRB2B?'#888':'#fff',fontWeight:isRB2B?400:500}}>{isRB2B?'@ '+lead.company:lead.company}</span>
+          )}
           {lead.domain&&<span style={{fontSize:12,color:MUTED}}>({lead.domain})</span>}
         </div>
         <div style={{display:'flex',flexWrap:'wrap',gap:'4px 16px',fontSize:12,color:'#666'}}>
@@ -31,6 +37,7 @@ function LeadCard({lead}){
       </div>
       <div style={{display:'flex',flexDirection:'column',alignItems:'flex-end',gap:8,flexShrink:0}}>
         <span style={{fontSize:11,color:MUTED}}>{timeAgo(lead.created_at)}</span>
+        {websiteUrl&&<a href={websiteUrl} target="_blank" rel="noreferrer" style={{background:'#1a1a1a',border:'1px solid #2a2a2a',color:'#aaa',fontSize:10,fontWeight:700,padding:'3px 8px',borderRadius:3,textDecoration:'none',fontFamily:'Oswald,sans-serif',letterSpacing:'0.05em'}}>WEBSITE ↗</a>}
         {lead.linkedin_url&&<a href={lead.linkedin_url} target="_blank" rel="noreferrer" style={{background:'#0077b5',color:'#fff',fontSize:10,fontWeight:700,padding:'3px 8px',borderRadius:3,textDecoration:'none',fontFamily:'Oswald,sans-serif',letterSpacing:'0.05em'}}>LINKEDIN</a>}
       </div>
     </div>
