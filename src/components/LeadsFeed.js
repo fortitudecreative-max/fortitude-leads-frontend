@@ -78,9 +78,9 @@ export default function LeadsFeed({session}){
   return(
     <div style={{background:BG,minHeight:'100vh',fontFamily:'Barlow,sans-serif'}}>
       {/* Header â matches fortitudecreative.com */}
-      <div style={{background:RED,borderBottom:'3px solid #000',padding:'0 28px',height:90,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+      <div style={{background:RED,borderBottom:'3px solid #000',padding:'0 28px',height:110,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
         <a href="https://fortitudecreative.com" target="_blank" rel="noreferrer">
-          <img src="https://fortitudecreative.com/wp-content/uploads/2025/04/Fortitude-Logo32.svg" alt="Fortitude Creative" style={{height:88,display:'block'}} />
+          <img src="https://fortitudecreative.com/wp-content/uploads/2025/04/Fortitude-Logo32.svg" alt="Fortitude Creative" style={{height:110,display:'block'}} />
         </a>
         <div style={{display:'flex',alignItems:'center',gap:16}}>
           <span style={{fontSize:13,color:'rgba(255,255,255,0.7)',fontFamily:'Barlow,sans-serif',letterSpacing:'0.05em',textTransform:'uppercase'}}>Leads Intelligence</span>
@@ -91,7 +91,9 @@ export default function LeadsFeed({session}){
       <div style={{maxWidth:900,margin:'0 auto',padding:'32px 24px'}}>
         {/* Filter bar */}
         <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:24}}>
-          {btn('all','ALL',counts.all)}{btn('rb2b','RB2B',counts.rb2b)}{btn('snitcher','SNITCHER',counts.snitcher)}
+          {btn('all','ALL',counts.all)}
+          <a href="https://app.rb2b.com/profiles" target="_blank" rel="noreferrer" style={{textDecoration:'none'}}>{btn('rb2b','RB2B',counts.rb2b)}</a>
+          <a href="https://app.snitcher.com/vAzzeXAN/dashboard/all-companies" target="_blank" rel="noreferrer" style={{textDecoration:'none'}}>{btn('snitcher','SNITCHER',counts.snitcher)}</a>
           <div style={{flex:1}}/>
           <button onClick={fetchLeads} style={{background:'transparent',border:'1px solid #333',borderRadius:4,padding:'8px 14px',color:MUTED,fontSize:13,cursor:'pointer',fontFamily:'Barlow,sans-serif'}}>â» Refresh</button>
         </div>
