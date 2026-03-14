@@ -25,19 +25,19 @@ function LeadCard({lead}){
           {lead.domain&&<span style={{fontSize:13,color:MUTED}}>({lead.domain})</span>}
         </div>
         <div style={{display:'flex',flexWrap:'wrap',gap:'6px 20px',fontSize:13,color:'#777'}}>
-          {lead.title&&<span>💼 {lead.title}</span>}
-          {lead.industry&&<span>🏭 {lead.industry}</span>}
-          {lead.employees&&<span>👥 {lead.employees} employees</span>}
-          {lead.country&&<span>🌎 {lead.country}</span>}
-          {lead.pages_viewed&&<span>📄 {lead.pages_viewed} pages</span>}
-          {lead.duration_seconds&&<span>⏱ {Math.round(lead.duration_seconds/60)} min</span>}
-          {lead.traffic_source&&<span>🔍 via {lead.traffic_source}</span>}
-          {(lead.landing_page||lead.page_url)&&<span style={{color:'#555'}}>🛬 {lead.landing_page||lead.page_url}</span>}
+          {lead.title&&<span>ð¼ {lead.title}</span>}
+          {lead.industry&&<span>ð­ {lead.industry}</span>}
+          {lead.employees&&<span>ð¥ {lead.employees} employees</span>}
+          {lead.country&&<span>ð {lead.country}</span>}
+          {lead.pages_viewed&&<span>ð {lead.pages_viewed} pages</span>}
+          {lead.duration_seconds&&<span>â± {Math.round(lead.duration_seconds/60)} min</span>}
+          {lead.traffic_source&&<span>ð via {lead.traffic_source}</span>}
+          {(lead.landing_page||lead.page_url)&&<span style={{color:'#555'}}>ð¬ {lead.landing_page||lead.page_url}</span>}
         </div>
       </div>
       <div style={{display:'flex',flexDirection:'column',alignItems:'flex-end',gap:8,flexShrink:0}}>
         <span style={{fontSize:12,color:MUTED}}>{timeAgo(lead.created_at)}</span>
-        {websiteUrl&&<a href={websiteUrl} target="_blank" rel="noreferrer" style={{background:'#1a1a1a',border:'1px solid #2a2a2a',color:'#aaa',fontSize:11,fontWeight:700,padding:'4px 10px',borderRadius:3,textDecoration:'none',fontFamily:'Oswald,sans-serif',letterSpacing:'0.05em'}}>WEBSITE ↗</a>}
+        {websiteUrl&&<a href={websiteUrl} target="_blank" rel="noreferrer" style={{background:'#1a1a1a',border:'1px solid #2a2a2a',color:'#aaa',fontSize:11,fontWeight:700,padding:'4px 10px',borderRadius:3,textDecoration:'none',fontFamily:'Oswald,sans-serif',letterSpacing:'0.05em'}}>WEBSITE â</a>}
         {lead.linkedin_url&&<a href={lead.linkedin_url} target="_blank" rel="noreferrer" style={{background:'#0077b5',color:'#fff',fontSize:11,fontWeight:700,padding:'4px 10px',borderRadius:3,textDecoration:'none',fontFamily:'Oswald,sans-serif',letterSpacing:'0.05em'}}>LINKEDIN</a>}
       </div>
     </div>
@@ -77,10 +77,10 @@ export default function LeadsFeed({session}){
 
   return(
     <div style={{background:BG,minHeight:'100vh',fontFamily:'Barlow,sans-serif'}}>
-      {/* Header — matches fortitudecreative.com */}
-      <div style={{background:RED,borderBottom:'3px solid #000',padding:'0 28px',height:64,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+      {/* Header â matches fortitudecreative.com */}
+      <div style={{background:RED,borderBottom:'3px solid #000',padding:'0 28px',height:90,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
         <a href="https://fortitudecreative.com" target="_blank" rel="noreferrer">
-          <img src="https://fortitudecreative.com/wp-content/uploads/2025/04/Fortitude-Logo32.svg" alt="Fortitude Creative" style={{height:44,display:'block'}} />
+          <img src="https://fortitudecreative.com/wp-content/uploads/2025/04/Fortitude-Logo32.svg" alt="Fortitude Creative" style={{height:88,display:'block'}} />
         </a>
         <div style={{display:'flex',alignItems:'center',gap:16}}>
           <span style={{fontSize:13,color:'rgba(255,255,255,0.7)',fontFamily:'Barlow,sans-serif',letterSpacing:'0.05em',textTransform:'uppercase'}}>Leads Intelligence</span>
@@ -93,7 +93,7 @@ export default function LeadsFeed({session}){
         <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:24}}>
           {btn('all','ALL',counts.all)}{btn('rb2b','RB2B',counts.rb2b)}{btn('snitcher','SNITCHER',counts.snitcher)}
           <div style={{flex:1}}/>
-          <button onClick={fetchLeads} style={{background:'transparent',border:'1px solid #333',borderRadius:4,padding:'8px 14px',color:MUTED,fontSize:13,cursor:'pointer',fontFamily:'Barlow,sans-serif'}}>↻ Refresh</button>
+          <button onClick={fetchLeads} style={{background:'transparent',border:'1px solid #333',borderRadius:4,padding:'8px 14px',color:MUTED,fontSize:13,cursor:'pointer',fontFamily:'Barlow,sans-serif'}}>â» Refresh</button>
         </div>
 
         {error&&<div style={{background:'#1a0000',border:'1px solid #3a0000',borderRadius:4,padding:'14px 18px',color:'#ff6b6b',fontSize:14,marginBottom:16}}>{error}</div>}
