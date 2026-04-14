@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { supabase, API } from '../App';
+import Header from './Header';
 
 const RED='#d60000',BG='#0a0a0a',CARD='#111',BORDER='#1e1e1e',MUTED='#666';
 const SRC={rb2b:{bg:'#0d1a2e',border:'#1a3a6e',text:'#5b9bd5',label:'RB2B'},snitcher:{bg:'#0d2010',border:'#1a4020',text:'#4caf50',label:'SNITCHER'}};
@@ -82,15 +83,12 @@ export default function LeadsFeed({session}){
 
   return(
     <div style={{background:BG,minHeight:'100vh',fontFamily:'Barlow,sans-serif',margin:0,padding:0}}>
-      <div style={{background:RED,borderBottom:'3px solid #000',padding:'0 28px',height:110,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-        <a href="https://fortitudecreative.com" target="_blank" rel="noreferrer">
-          <img src="https://fortitudecreative.com/wp-content/uploads/2025/04/Fortitude-Logo32.svg" alt="Fortitude Creative" style={{height:110,display:'block'}} />
-        </a>
-        <div style={{display:'flex',alignItems:'center',gap:16}}>
-          <span style={{fontSize:13,color:'rgba(255,255,255,0.7)',fontFamily:'Barlow,sans-serif',letterSpacing:'0.08em',textTransform:'uppercase'}}>Leads Intelligence</span>
-          <button onClick={()=>supabase.auth.signOut()} style={{background:'rgba(0,0,0,0.3)',border:'1px solid rgba(255,255,255,0.2)',borderRadius:4,padding:'6px 14px',color:'rgba(255,255,255,0.8)',fontSize:12,cursor:'pointer',fontFamily:'Barlow,sans-serif'}}>Sign out</button>
-        </div>
-      </div>
+      <Header
+        activeUnit="LEADS"
+        rightSlot={
+          <button onClick={()=>supabase.auth.signOut()} style={{background:'#171717',border:'1px solid #2A2A2A',borderRadius:4,padding:'7px 14px',color:'#8A8A8A',fontSize:12,fontWeight:700,letterSpacing:'0.08em',textTransform:'uppercase',cursor:'pointer',fontFamily:'-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif'}}>Sign out</button>
+        }
+      />
       <div style={{maxWidth:920,margin:'0 auto',padding:'28px 24px'}}>
         <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:24}}>
           {btn('all','ALL',counts.all)}
