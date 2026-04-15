@@ -1,6 +1,9 @@
 // Fortitude shared header — identical look across all apps (Leads, Branding, Marketing, SEO, PPC).
 // Mirrors the header on admin.fortitudecreative.com. Uses plain inline styles so any React
 // app can drop it in without needing Tailwind. Keep this file in sync across repos.
+//
+// Mobile layout: logo on the LEFT, hamburger on the RIGHT. The hamburger dropdown
+// contains both the unit navigation and the rightSlot content (e.g. Sign out).
 import React, { useEffect, useState } from 'react';
 
 const BG = '#111111';
@@ -65,34 +68,20 @@ export default function Header({ activeUnit, rightSlot }) {
       style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         gap: 16, padding: isMobile ? '0 12px' : '0 24px',
-        height: isMobile ? 80 : 128,
+        height: isMobile ? 64 : 128,
         borderBottom: '1px solid ' + LINE,
         background: BG,
         position: 'sticky', top: 0, zIndex: 30,
         fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif'
       }}
     >
+      {/* LEFT: logo (always) + desktop nav */}
       <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? 16 : 32, minWidth: 0 }}>
-        {isMobile && (
-          <button
-            onClick={() => setMenu((m) => !m)}
-            aria-label="Open menu"
-            style={{
-              width: 40, height: 40, borderRadius: 4,
-              background: '#171717', border: '1px solid ' + LINE,
-              color: MUTED, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
-            }}
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-          </button>
-        )}
         <a href="https://admin.fortitudecreative.com" style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
           <img
             src="https://fortitudecreative.com/wp-content/uploads/2025/04/Fortitude-Logo32.svg"
             alt="Fortitude Creative"
-            style={{ height: isMobile ? 64 : 110, width: 'auto', display: 'block' }}
+            style={{ height: isMobile ? 40 : 110, width: 'auto', display: 'block' }}
           />
         </a>
         {!isMobile && (
@@ -103,22 +92,38 @@ export default function Header({ activeUnit, rightSlot }) {
           </nav>
         )}
       </div>
+
+      {/* RIGHT: desktop right-slot OR mobile hamburger */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
-        {rightSlot}
+        {!isMobile && rightSlot}
+        {isMobile && (
+          <button
+            onClick={() => setMenu((m) => !m)}
+            aria-label="Open menu"
+            style={{
+              width: 40, height: 40, borderRadius: 4,
+              background: '#171717', border: '1px solid ' + LINE,
+              color: MUTED, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
+            }}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </button>
+        )}
       </div>
 
+      {/* Mobile drawer */}
       {isMobile && menu && (
         <div
-          style={{
-            position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', zIndex: 40
-          }}
+          style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', zIndex: 40 }}
           onClick={() => setMenu(false)}
         >
           <div
             onClick={(e) => e.stopPropagation()}
             style={{
-              position: 'absolute', left: 0, top: 0, bottom: 0, width: 288,
-              background: BG, borderRight: '1px solid ' + LINE,
+              position: 'absolute', right: 0, top: 0, bottom: 0, width: 288,
+              background: BG, borderLeft: '1px solid ' + LINE,
               padding: '16px 8px', display: 'flex', flexDirection: 'column', gap: 4,
               overflowY: 'auto'
             }}
@@ -150,6 +155,16 @@ export default function Header({ activeUnit, rightSlot }) {
                 </a>
               );
             })}
+
+            {rightSlot && (
+              <div style={{
+                marginTop: 'auto', paddingTop: 16, borderTop: '1px solid ' + LINE,
+                display: 'flex', flexDirection: 'column', gap: 8, padding: '16px 12px'
+              }}>
+                <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.12em', color: MUTED }}>ACCOUNT</div>
+                {rightSlot}
+              </div>
+            )}
           </div>
         </div>
       )}
