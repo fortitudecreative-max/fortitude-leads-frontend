@@ -68,7 +68,7 @@ export default function Header({ activeUnit, rightSlot }) {
       style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         gap: 16, padding: isMobile ? '0 12px' : '0 24px',
-        height: isMobile ? 64 : 128,
+        height: isMobile ? 80 : 128,
         borderBottom: '1px solid ' + LINE,
         background: BG,
         position: 'sticky', top: 0, zIndex: 30,
@@ -81,7 +81,7 @@ export default function Header({ activeUnit, rightSlot }) {
           <img
             src="https://fortitudecreative.com/wp-content/uploads/2025/04/Fortitude-Logo32.svg"
             alt="Fortitude Creative"
-            style={{ height: isMobile ? 40 : 110, width: 'auto', display: 'block' }}
+            style={{ height: isMobile ? 64 : 110, width: 'auto', display: 'block' }}
           />
         </a>
         {!isMobile && (
