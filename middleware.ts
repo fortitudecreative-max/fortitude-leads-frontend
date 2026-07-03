@@ -24,21 +24,39 @@ export const config = {
 };
 
 export default async function middleware(req: Request): Promise<Response> {
-  const secret = (process.env.FORTITUDE_FAMILY_SESSION_SECRET || "").trim();
-  if (secret.length < 32) {
-    console.warn(
-      "[family-auth] FORTITUDE_FAMILY_SESSION_SECRET unset or <32 chars; SSO is disabled and every page is publicly accessible.",
-    );
-    return next();
+  // 1) Family SSO fast-path — valid family cookie passes straight through.
+  const familySecret = (process.env.FORTITUDE_FAMILY_SESSION_SECRET || "").trim();
+  if (familySecret.length >= 32) {
+    const token = readCookie(req.headers.get("cookie") || "", FAMILY_COOKIE_NAME);
+    if (await verifyFamilyCookie(token, familySecret)) return next();
   }
 
-  const token = readCookie(req.headers.get("cookie") || "", FAMILY_COOKIE_NAME);
-  const ok = await verifyFamilyCookie(token, secret);
-  if (ok) return next();
+  // 2) Interim operator Basic auth (OPS_USERNAME / OPS_PASSWORD) — same gate
+  //    as council + the ads tool. Gates the app NOW, before JV2's family-login
+  //    is finished. The JV2 redirect is intentionally dropped for now:
+  //    jv2/family-login returns 503, so bouncing there would brick the app.
+  //    Restore the redirect (see git history) once JV2 login is live.
+  const opsUsername = (process.env.OPS_USERNAME || "ops").trim();
+  const opsPassword = (process.env.OPS_PASSWORD || "").trim();
+  if (opsPassword.length > 0) {
+    const creds = decodeBasic(req.headers.get("authorization"));
+    if (creds && timingSafeEqualStr(creds.user, opsUsername) && timingSafeEqualStr(creds.pass, opsPassword)) {
+      return next();
+    }
+    return new Response("Unauthorized: authentication required", {
+      status: 401,
+      headers: {
+        "WWW-Authenticate": 'Basic realm="Fortitude Meta Leads", charset="UTF-8"',
+        "content-type": "text/plain; charset=utf-8",
+      },
+    });
+  }
 
-  const loginUrl = new URL("https://jv2.fortitudecreative.com/family-login");
-  loginUrl.searchParams.set("next", req.url);
-  return Response.redirect(loginUrl.toString(), 302);
+  // 3) Nothing configured — fail open with a warning (never hard-lock).
+  console.warn(
+    "[auth] Neither FORTITUDE_FAMILY_SESSION_SECRET nor OPS_PASSWORD is set; every page is publicly accessible. Set OPS_PASSWORD to gate it.",
+  );
+  return next();
 }
 
 // ──────────────────────────────────────────────────────────────────────
@@ -52,6 +70,24 @@ function readCookie(header: string, name: string): string | undefined {
     if (k === name) return vparts.join("=");
   }
   return undefined;
+}
+
+function decodeBasic(header: string | null): { user: string; pass: string } | null {
+  if (!header || !header.toLowerCase().startsWith("basic ")) return null;
+  let decoded: string;
+  try {
+    decoded = atob(header.slice(6).trim());
+  } catch {
+    return null;
+  }
+  const i = decoded.indexOf(":");
+  if (i === -1) return null;
+  return { user: decoded.slice(0, i), pass: decoded.slice(i + 1) };
+}
+
+function timingSafeEqualStr(a: string, b: string): boolean {
+  const enc = new TextEncoder();
+  return timingSafeEqualBytes(enc.encode(a), enc.encode(b));
 }
 
 function base64urlToBytes(b64url: string): Uint8Array {
